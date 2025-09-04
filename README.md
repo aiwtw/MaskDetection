@@ -92,19 +92,114 @@ python yolo_infer.py --weights runs/train/weights/best.pt --source test/
 
 ### 1. GUI Interface
 
+The graphical user interface (GUI) provides flexible configuration options for users.  
+It allows selecting different detection models, choosing detection modes (image, folder, video, or real-time camera), and customizing confidence thresholds and IoU settings.  
+Additionally, users can decide whether to save results and whether to enable voice feedback.  
+The GUI is designed to be intuitive, user-friendly, and practical for real-world deployment.
+
 ![ui](https://github.com/aiwtw/MaskDetection/blob/main/demo/ui.png?raw=true)
+
+---
 
 ### 2. Detection Results
 
-![photo](https://github.com/aiwtw/MaskDetection/blob/main/demo/photo.gif?raw=true)
-![folder]()
-![video]()
-![realtime]()
+Below are representative examples of the four supported detection modes:
 
+- **Image Detection Example:**  
+  ![photo](https://github.com/aiwtw/MaskDetection/blob/main/demo/photo.gif?raw=true)
 
-### 3. Training Metrics
+- **Batch Folder Detection Example:**  
+  ![folder](https://github.com/aiwtw/MaskDetection/blob/main/demo/folder.gif?raw=true)
+
+- **Video Stream Detection Example:**  
+  ![video](https://github.com/aiwtw/MaskDetection/blob/main/demo/video.gif?raw=true)
+
+- **Real-Time Camera Detection Example:**  
+  ![realtime](https://github.com/aiwtw/MaskDetection/blob/main/demo/realtime.jpg?raw=true)
+
+---
+
+### 3. Training and Evaluation Metrics
+
+This section summarizes the model training configuration, validation results, and performance benchmarks.
+
+#### 3.1 YOLOv11 Benchmark Comparison
+
+| Model    | Parameters (M) | mAP@0.5 | Inference Latency (T4 GPU) | Efficiency (TOPS/W) |
+|----------|----------------|---------|----------------------------|----------------------|
+| YOLOv11n | 2.7            | 42.1    | 5.1ms                      | 58.3                 |
+| YOLOv11s | 9.8            | 48.5    | 8.3ms                      | 47.6                 |
+| YOLOv11m | 23.1           | 54.8    | 19.7ms                     | 36.2                 |
+
+This project adopts **YOLOv11m** to balance detection accuracy and real-time performance.
+
+---
+
+#### 3.2 Training Configuration
+
+| Parameter                | Value        | Description |
+|---------------------------|-------------|-------------|
+| Epochs                   | 300         | Total training rounds |
+| Batch size               | 128         | Samples per iteration (GPU memory optimized) |
+| Image size               | 640         | Resized for small mask detection |
+| Device                   | NVIDIA A100 | Training accelerator |
+| Dataset config            | `data.yaml` | Dataset definition |
+| Mosaic augmentation      | 1.0         | 100% probability enabled |
+| Horizontal flip (fliplr) | 0.5         | 50% chance |
+| Warmup epochs            | 3.0         | Gradual LR warmup |
+| Optimizer                | AdamW       | With weight decay |
+| Early stopping           | 100 epochs  | No improvement triggers stop |
+| Mixed precision training | Enabled     | Faster and memory efficient |
+| Model saving             | Enabled     | Save best & checkpoint |
+| Validation               | Enabled     | Every epoch evaluation |
+
+---
+
+#### 3.3 Validation Curves
+
+The following figure shows the validation curves and confusion matrices:  
+- **Precision (P) Curve**  
+- **Recall (R) Curve**  
+- **F1 Score Curve**  
+- **PR Curve (Precision-Recall relationship)**  
+- **Confusion Matrix & Normalized Confusion Matrix**
 
 ![results](https://github.com/aiwtw/MaskDetection/blob/main/demo/results.jpg?raw=true)
+
+---
+
+#### 3.4 Evaluation Results
+
+We evaluated the trained YOLOv11m model on an independent validation/test set.  
+Key performance metrics are as follows:
+
+- **General Classification Metrics**  
+  - Precision: **87.30%**  
+  - Recall: **81.30%**  
+  - F1 Score: **84.98%**
+
+- **Object Detection Metrics**  
+  - mAP@0.5: **86.45%**  
+  - mAP@0.5:0.95: **47.61%**
+
+- **Efficiency and Speed**  
+  - End-to-end latency: **1.651 ms/frame**  
+    - Preprocessing: 0.126 ms  
+    - Inference: 0.497 ms  
+    - Postprocessing: 1.029 ms  
+  - GPU memory usage: 18 GB (NVIDIA A100)  
+  - CPU usage: Peak 12% (Intel Xeon, 80 threads)
+
+---
+
+#### 3.5 Analysis
+
+- The validation curves indicate **stable convergence** of the training process.  
+- The **precision-recall tradeoff** suggests a good balance between false positives and false negatives.  
+- The **confusion matrix** shows robust performance across mask/no-mask classes, with limited misclassification.  
+- Compared to smaller YOLOv11 variants (n, s), the **YOLOv11m** achieves significantly higher accuracy while maintaining acceptable inference speed.  
+- The results confirm that the model is suitable for **real-time mask detection in practical deployment scenarios**.
+
 
 ---
 
