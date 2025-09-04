@@ -92,15 +92,19 @@ python yolo_infer.py --weights runs/train/weights/best.pt --source test/
 
 ### 1. GUI Interface
 
-
+![ui](https://github.com/aiwtw/MaskDetection/blob/main/demo/ui.png?raw=true)
 
 ### 2. Detection Results
 
-(Insert detection example image here: mask vs. no-mask)
+![photo](https://github.com/aiwtw/MaskDetection/blob/main/demo/photo.gif?raw=true)
+![folder]()
+![video]()
+![realtime]()
+
 
 ### 3. Training Metrics
 
-(Insert sample training curve: loss/mAP graph)
+![results](https://github.com/aiwtw/MaskDetection/blob/main/demo/results.jpg?raw=true)
 
 ---
 
