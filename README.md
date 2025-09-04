@@ -29,7 +29,7 @@ This project consists of the following core modules:
 - **Validation samples**: 160  
 - **Test samples**: 160  
 
-👉 [Download Dataset](https://aiwtw.github.io/)  
+👉 [Download Dataset](https://drive.google.com/file/d/1IozyuKmFLdiwvtuVxZeNj-SGGJ0E2Xpg/view?usp=sharing)  
 
 ---
 
@@ -65,7 +65,7 @@ pip install -r requirements.txt
 #### Option A: Run GUI
 
 ```bash
-python safeui/main.py
+python main.py
 ```
 
 * The UI allows detection on:
@@ -78,11 +78,11 @@ python safeui/main.py
 #### Option B: Run Inference (without GUI)
 
 ```bash
-python yolo_server/scripts/yolo_infer.py --weights yolo_server/runs/train/weights/best.pt --source test/
+python yolo_infer.py --weights runs/train/weights/best.pt --source test/
 ```
 
 * Results will be saved in:
-  `yolo_server/runs/detect/predict/`
+  `runs/detect/predict/`
 
 ---
 
@@ -92,7 +92,7 @@ python yolo_server/scripts/yolo_infer.py --weights yolo_server/runs/train/weight
 
 ### 1. GUI Interface
 
-(Insert screenshot of the PySide6 UI here)
+
 
 ### 2. Detection Results
 
